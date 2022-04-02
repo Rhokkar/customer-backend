@@ -1,0 +1,30 @@
+version: "3.9"
+
+services:
+  postgres:
+    container_name: customer-postgres
+    image: postgres:latest
+    restart: always
+    volumes:
+      - postgres_data:/var/postgres_data
+    environment:
+      - PGDATA=/var/postgres_data
+      - POSTGRES_USER=${CUSTOMER_POSTGRES_USER}
+      - POSTGRES_PASSWORD=${CUSTOMER_POSTGRES_PASSWORD}
+      - POSTGRES_DB=customerdb
+    ports:
+      - ${CUSTOMER_POSTGRES_PORT}:${CUSTOMER_POSTGRES_PORT}
+    env_file:
+      - .env
+  backend:
+    container_name: customer-server
+    build: .
+    ports:
+      - ${CUSTOMER_RMI_PORT}:${CUSTOMER_RMI_PORT}
+    links:
+      - postgres
+    env_file:
+      - .env
+
+volumes:
+  postgres_data:
