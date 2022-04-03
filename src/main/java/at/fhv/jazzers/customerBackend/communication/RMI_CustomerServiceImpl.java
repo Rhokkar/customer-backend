@@ -8,6 +8,7 @@ import at.fhv.jazzers.shared.dto.CustomerOverviewDTO;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class RMI_CustomerServiceImpl extends UnicastRemoteObject implements RMI_CustomerService {
     private final CustomerRepository customerRepository = new HibernateCustomerRepository();
@@ -18,7 +19,6 @@ public class RMI_CustomerServiceImpl extends UnicastRemoteObject implements RMI_
 
     @Override
     public List<CustomerOverviewDTO> search(String name) throws RemoteException {
-        return List.of();
-        // return customerRepository.search(name);
+        return customerRepository.search(name).stream().map(customer -> new CustomerOverviewDTO(customer.customerId().id(), customer.givenName(), customer.familyName())).collect(Collectors.toList());
     }
 }
