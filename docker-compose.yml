@@ -16,6 +16,9 @@ services:
       - ${CUSTOMER_POSTGRES_PORT}:${CUSTOMER_POSTGRES_PORT}
     env_file:
       - .env
+    command: -p ${CUSTOMER_POSTGRES_PORT}
+    expose:
+      - ${CUSTOMER_POSTGRES_PORT}
   customerserver:
     container_name: customer-server
     build: .
@@ -25,6 +28,8 @@ services:
       - customerpostgres
     env_file:
       - .env
-
+    command: -p ${CUSTOMER_RMI_PORT}
+    expose:
+      - ${CUSTOMER_RMI_PORT}
 volumes:
   customer_data:
