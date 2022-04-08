@@ -13,8 +13,6 @@ public class RMI_Server {
         System.setProperty("java.rmi.server.hostname", System.getenv("CUSTOMER_RMI_HOST"));
         System.setProperty("com.sun.management.jmxremote.port", System.getenv("CUSTOMER_RMI_PORT"));
         System.setProperty("com.sun.management.jmxremote.rmi.port", System.getenv("CUSTOMER_RMI_PORT"));
-        // System.setProperty("com.sun.management.jmxremote", "true");
-        // System.setProperty("com.sun.management.jmxremote.local.only", "false");
         System.setProperty("com.sun.management.jmxremote.authenticate", "false");
         System.setProperty("com.sun.management.jmxremote.ssl", "false");
 
@@ -22,7 +20,7 @@ public class RMI_Server {
         LocateRegistry.createRegistry(Integer.parseInt(System.getenv("CUSTOMER_RMI_PORT")));
 
         // Bind Services
-        Naming.rebind("rmi://localhost:1100/customerService", ServiceRegistry.rmi_customerService());
+        Naming.rebind("rmi://localhost:" + System.getenv("CUSTOMER_RMI_PORT") + "/customerService", ServiceRegistry.rmi_customerService());
         System.out.println("Customer Service bound on PORT " + System.getenv("CUSTOMER_RMI_PORT"));
     }
 }
