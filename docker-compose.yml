@@ -5,10 +5,7 @@ services:
     container_name: customer-postgres
     image: postgres:latest
     restart: always
-    volumes:
-      - customer_data:/var/customer_data
     environment:
-      - PGDATA=/var/customer_data
       - POSTGRES_USER=${CUSTOMER_POSTGRES_USER}
       - POSTGRES_PASSWORD=${CUSTOMER_POSTGRES_PASSWORD}
       - POSTGRES_DB=customerdb
@@ -31,5 +28,3 @@ services:
     command: -p ${CUSTOMER_RMI_PORT}
     expose:
       - ${CUSTOMER_RMI_PORT}
-volumes:
-  customer_data:
