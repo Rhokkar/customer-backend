@@ -22,22 +22,18 @@ public class RMI_CustomerServiceImpl extends UnicastRemoteObject implements RMI_
     }
 
     @Override
-    public Optional<CustomerDetailDTO> searchById(UUID customerId) throws RemoteException {
-        Optional<Customer> optionalCustomer = customerRepository.searchById(new CustomerId(customerId));
-        Optional<CustomerDetailDTO> optionalCustomerDetailDTO = Optional.empty();
+    public CustomerDetailDTO searchById(UUID customerId) throws RemoteException {
+        Optional<Customer> customer = customerRepository.searchById(new CustomerId(customerId));
 
-        if (optionalCustomer.isPresent()) {
-            Customer customer = optionalCustomer.get();
-
-            AddressDTO addressDTO = new AddressDTO(customer.addressaddressCountry(), customer.addressaddressLocality(), customer.addresspostalCode(), customer.addressstreetAddress(), customer.addresshouseNumber());
-            BankAccountDTO bankAccountDTO = new BankAccountDTO(customer.bankAccountbankcity(), customer.bankAccountbankbankCode(), customer.bankAccountbankbic(), customer.bankAccountiban());
-            CreditCardDTO creditCardDTO = new CreditCardDTO(customer.creditCardnumber(), customer.creditCardtype());
-            CustomerDetailDTO customerDetailDTO = new CustomerDetailDTO(customer.customerId().id(), customer.givenName(), customer.familyName(), customer.gender(), customer.birthDate(), customer.email(), customer.phoneNo(), customer.mobileNo(), addressDTO, bankAccountDTO, creditCardDTO);
-
-            optionalCustomerDetailDTO = Optional.of(customerDetailDTO);
+        if (customer.isEmpty()) {
+            throw new IllegalArgumentException("The customer does not exist.");
         }
 
-        return optionalCustomerDetailDTO;
+        AddressDTO addressDTO = new AddressDTO(customer.get().addressaddressCountry(), customer.get().addressaddressLocality(), customer.get().addresspostalCode(), customer.get().addressstreetAddress(), customer.get().addresshouseNumber());
+        BankAccountDTO bankAccountDTO = new BankAccountDTO(customer.get().bankAccountbankcity(), customer.get().bankAccountbankbankCode(), customer.get().bankAccountbankbic(), customer.get().bankAccountiban());
+        CreditCardDTO creditCardDTO = new CreditCardDTO(customer.get().creditCardnumber(), customer.get().creditCardtype());
+
+        return new CustomerDetailDTO(customer.get().customerId().id(), customer.get().givenName(), customer.get().familyName(), customer.get().gender(), customer.get().birthDate(), customer.get().email(), customer.get().phoneNo(), customer.get().mobileNo(), addressDTO, bankAccountDTO, creditCardDTO);
     }
 
     @Override
