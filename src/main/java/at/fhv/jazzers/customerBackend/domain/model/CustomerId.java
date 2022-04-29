@@ -1,11 +1,15 @@
 package at.fhv.jazzers.customerBackend.domain.model;
 
+import org.hibernate.annotations.Type;
+
 import javax.persistence.Embeddable;
+import java.io.Serializable;
 import java.util.Objects;
 import java.util.UUID;
 
 @Embeddable
-public class CustomerId {
+public class CustomerId implements Serializable {
+    @Type(type = "uuid-char")
     private UUID id;
 
     protected CustomerId() {
