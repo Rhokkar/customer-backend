@@ -5,25 +5,23 @@ services:
     image: postgres:latest
     restart: always
     environment:
-      - POSTGRES_USER=${CUSTOMER_POSTGRES_USER}
-      - POSTGRES_PASSWORD=${CUSTOMER_POSTGRES_PASSWORD}
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=bcbpZBQ08yQ=
       - POSTGRES_DB=customerdb
     ports:
-      - ${CUSTOMER_POSTGRES_PORT}:${CUSTOMER_POSTGRES_PORT}
-    env_file:
-      - .env
-    command: -p ${CUSTOMER_POSTGRES_PORT}
+      - "5433:5433"
+    command: -p 5433
     expose:
-      - ${CUSTOMER_POSTGRES_PORT}
+      - 5433
   customerserver:
     container_name: customer-server
     build: .
     ports:
-      - ${CUSTOMER_RMI_PORT}:${CUSTOMER_RMI_PORT}
+      - "1100:1100"
     links:
       - customerpostgres
+    command: -p 1100
+    expose:
+      - 1100
     env_file:
       - .env
-    command: -p ${CUSTOMER_RMI_PORT}
-    expose:
-      - ${CUSTOMER_RMI_PORT}

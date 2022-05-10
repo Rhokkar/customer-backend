@@ -18,7 +18,7 @@ public class RMI_CustomerServiceImpl extends UnicastRemoteObject implements RMI_
     private final CustomerRepository customerRepository = new HibernateCustomerRepository();
 
     public RMI_CustomerServiceImpl() throws RemoteException {
-        super(Integer.parseInt(System.getenv("CUSTOMER_RMI_PORT")));
+        super(1100);
     }
 
     @Override
