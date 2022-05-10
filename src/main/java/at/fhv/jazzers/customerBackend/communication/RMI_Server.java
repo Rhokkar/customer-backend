@@ -20,7 +20,7 @@ public class RMI_Server {
         LocateRegistry.createRegistry(1100);
 
         // Bind Services
-        Naming.rebind("rmi://localhost:1100/customerService", ServiceRegistry.rmi_customerService());
+        Naming.rebind("rmi://" + System.getenv("CUSTOMER_RMI_HOST") + ":1100/customerService", ServiceRegistry.rmi_customerService());
         System.out.println("Customer Service bound on PORT 1100");
     }
 }
